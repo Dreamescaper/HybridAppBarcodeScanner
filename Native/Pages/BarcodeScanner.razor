@@ -1,0 +1,58 @@
+﻿@using BlazorBindings.Maui.Elements
+@using BlazorBindings.Maui.Elements.ZXing.Net
+@using ZXing.Net.Maui;
+
+<ContentPage Title="Scanner" BackgroundColor="Colors.Black">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto">
+
+        <CameraBarcodeReaderView IsTorchOn="_isTorchEnabled"
+                                 CameraLocation="_cameraLocation"
+                                 Options="_options"
+                                 OnBarcodesDetected="BarcodesDetected"
+                                 HorizontalOptions="LayoutOptions.Fill"
+                                 Grid.ColumnSpan="2" />
+
+        <Button Text="Toggle Torch"
+                OnClick="ToggleTorch"
+                Margin="6"
+                Grid.Row="1"
+                Grid.Column="0" />
+
+        <Button Text="Flip"
+                OnClick="FlipCamera"
+                Margin="6"
+                Grid.Row="1"
+                Grid.Column="1" />
+    </Grid>
+</ContentPage>
+
+@code {
+    [Parameter] public EventCallback<BarcodeResult> BarcodeDetected { get; set; }
+    [Inject] INavigationService Navigation { get; set; }
+
+    CameraLocation _cameraLocation;
+    bool _isTorchEnabled = false;
+
+    BarcodeReaderOptions _options = new()
+        {
+            AutoRotate = true,
+            Multiple = false
+        };
+
+    void FlipCamera()
+    {
+        _cameraLocation = _cameraLocation == CameraLocation.Rear ? CameraLocation.Front : CameraLocation.Rear;
+    }
+
+    void ToggleTorch()
+    {
+        _isTorchEnabled = !_isTorchEnabled;
+    }
+
+    async Task BarcodesDetected(BarcodeDetectionEventArgs args)
+    {
+        var result = args.Results[0];
+        await BarcodeDetected.InvokeAsync(result);
+        await Navigation.PopAsync();
+    }
+}

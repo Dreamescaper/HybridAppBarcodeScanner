@@ -7,12 +7,14 @@
 
 <h1>Barcode Scanner</h1>
 
+<p>(web page)</p>
+
 <button class="btn btn-primary" @onclick="Scan">Scan Barcode</button>
 
 @if (_barcode is not null)
 {
-    <p>Format: @_barcode.Format</p>
     <p>Value: @_barcode.Value</p>
+    <p>Format: @_barcode.Format</p>
     <p>Metadata: <pre>@_metadataJson</pre></p>
 }
 

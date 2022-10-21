@@ -2,7 +2,7 @@
 @using BlazorBindings.Maui.Elements.ZXing.Net
 @using ZXing.Net.Maui;
 
-<ContentPage Title="Scanner" BackgroundColor="Colors.Black">
+<ContentPage Title="Scanner (native page)" BackgroundColor="Colors.Black">
     <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto">
 
         <CameraBarcodeReaderView IsTorchOn="_isTorchEnabled"
@@ -28,6 +28,7 @@
 
 @code {
     [Parameter] public EventCallback<BarcodeResult> BarcodeDetected { get; set; }
+
     [Inject] INavigationService Navigation { get; set; }
 
     CameraLocation _cameraLocation;
